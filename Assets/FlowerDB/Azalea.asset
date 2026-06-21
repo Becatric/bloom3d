@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 371fcced5420eda46b9cb39fda4431ce, type: 3}
+  m_Name: Azalea
+  m_EditorClassIdentifier: Assembly-CSharp::FlowerData
+  id: azalea
+  displayName: Azalea
+  scientificName: 'Rhododendron simsii '
+  markerImageName: azalea
+  description: Azalea is a compact evergreen shrub known for its abundant, funnel-shaped
+    flowers in shades of pink, red, white, purple and orange. Rhododendron simsii
+    is commonly grown as an indoor or greenhouse azalea. It has small, dark-green
+    leaves and produces a colourful display during the cooler months. With suitable
+    care, the plant can flower again in following seasons.
+  origin: "East and Southeast Asia \u2014 southern China, Taiwan, parts of Indochina
+    and the Ryukyu Islands of Japan"
+  meaning: Femininity, gentleness, affection, gratitude and care. Azaleas can also
+    represent temperance and the importance of looking after loved ones.
+  habitat: Cool, humid forests, woodland margins, mountain slopes and rocky areas
+    with acidic, well-drained soil.
+  birthflower: Not an official traditional birth flower; commonly associated with
+    spring
+  floweringSeason: Naturally spring; indoor plants may flower from late autumn to
+    spring when commercially forced
+  sunlight: Bright, indirect light or partial shade. Protect it from intense midday
+    and afternoon sunlight.
+  watering: Keep the soil consistently moist but never waterlogged. Water when the
+    surface begins to feel slightly dry. Rainwater or low-mineral water is preferable
+    because azaleas dislike alkaline conditions.
+  difficulty: Moderate
+  flowerImage: {fileID: 0}
+  flowerPrefab: {fileID: 919132149155446097, guid: 735ecab34d227c742abe861c6ddf9dd9, type: 3}

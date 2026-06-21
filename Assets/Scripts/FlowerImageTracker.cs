@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
@@ -6,41 +5,49 @@ using UnityEngine.XR.ARSubsystems;
 
 public class FlowerImageTracker : MonoBehaviour
 {
-    [Serializable]
-    public class FlowerMarker
-    {
-        public string imageName;
-        public GameObject flowerPrefab;
-    }
-
+    [Header("AR")]
     [SerializeField]
     private ARTrackedImageManager trackedImageManager;
 
+    [Header("Flower Database")]
     [SerializeField]
-    private List<FlowerMarker> flowerMarkers = new();
+    private FlowerDatabase flowerDatabase;
 
-    private readonly Dictionary<TrackableId, GameObject> spawnedFlowers = new();
+    [Header("Flower Info UI")]
+    [SerializeField]
+    private FlowerInfoCarousel flowerInfoCarousel;
+
+    private readonly Dictionary<TrackableId, GameObject> spawnedFlowers =
+        new Dictionary<TrackableId, GameObject>();
 
     private void Awake()
     {
         if (trackedImageManager == null)
         {
-            trackedImageManager = GetComponent<ARTrackedImageManager>();
+            trackedImageManager =
+                GetComponent<ARTrackedImageManager>();
         }
     }
 
     private void OnEnable()
     {
-        trackedImageManager.trackablesChanged.AddListener(
-            OnTrackedImagesChanged
-        );
+        if (trackedImageManager != null)
+        {
+            trackedImageManager.trackablesChanged.AddListener(
+                OnTrackedImagesChanged
+            );
+        }
     }
 
     private void OnDisable()
     {
-        trackedImageManager.trackablesChanged.RemoveListener(
-            OnTrackedImagesChanged
-        );
+        if (trackedImageManager != null)
+        {
+            trackedImageManager.trackablesChanged.RemoveListener(
+                OnTrackedImagesChanged
+            );
+        }
+        ClearAllFlowers();
     }
 
     private void OnTrackedImagesChanged(
@@ -62,45 +69,70 @@ public class FlowerImageTracker : MonoBehaviour
             in eventArgs.removed
         )
         {
-            if (spawnedFlowers.TryGetValue(
-                removedImage.Key,
-                out GameObject flower
-            ))
-            {
-                Destroy(flower);
-                spawnedFlowers.Remove(removedImage.Key);
-            }
+            RemoveFlower(removedImage.Key);
         }
     }
 
     private void SpawnFlower(ARTrackedImage trackedImage)
     {
-        string detectedImageName = trackedImage.referenceImage.name;
+        if (trackedImage.trackingState != TrackingState.Tracking)
+        {
+            return;
+        }
 
-        FlowerMarker marker = flowerMarkers.Find(
-            item => item.imageName == detectedImageName
-        );
+        if (spawnedFlowers.ContainsKey(trackedImage.trackableId))
+        {
+            return;
+        }
 
-        if (marker == null || marker.flowerPrefab == null)
+        if (flowerDatabase == null)
+        {
+            Debug.LogError("Flower Database is not assigned.");
+            return;
+        }
+
+        string markerName = trackedImage.referenceImage.name;
+
+        FlowerData flowerData =
+            flowerDatabase.GetFlowerByMarkerName(markerName);
+
+        if (flowerData == null)
         {
             Debug.LogWarning(
-                $"No flower assigned for image: {detectedImageName}"
+                $"No FlowerData found for marker: {markerName}"
+            );
+
+            return;
+        }
+
+        if (flowerData.flowerPrefab == null)
+        {
+            Debug.LogWarning(
+                $"No prefab assigned for {flowerData.displayName}"
             );
 
             return;
         }
 
         GameObject flower = Instantiate(
-            marker.flowerPrefab,
+            flowerData.flowerPrefab,
             trackedImage.transform
         );
 
         flower.transform.localPosition = Vector3.zero;
         flower.transform.localRotation = Quaternion.identity;
+        flower.transform.localScale =
+            Vector3.one * flowerData.arScale;
 
-        spawnedFlowers[trackedImage.trackableId] = flower;
+        spawnedFlowers.Add(
+            trackedImage.trackableId,
+            flower
+        );
 
-        UpdateFlower(trackedImage);
+        if (flowerInfoCarousel != null)
+        {
+            flowerInfoCarousel.ShowFlower(flowerData);
+        }
     }
 
     private void UpdateFlower(ARTrackedImage trackedImage)
@@ -110,12 +142,49 @@ public class FlowerImageTracker : MonoBehaviour
             out GameObject flower
         ))
         {
-            SpawnFlower(trackedImage);
+            if (trackedImage.trackingState == TrackingState.Tracking)
+            {
+                SpawnFlower(trackedImage);
+            }
+
             return;
         }
 
-        flower.SetActive(
-            trackedImage.trackingState != TrackingState.None
-        );
+        bool isTracking =
+            trackedImage.trackingState == TrackingState.Tracking;
+
+        flower.SetActive(isTracking);
+    }
+
+    private void RemoveFlower(TrackableId trackableId)
+    {
+        if (!spawnedFlowers.TryGetValue(
+            trackableId,
+            out GameObject flower
+        ))
+        {
+            return;
+        }
+
+        Destroy(flower);
+        spawnedFlowers.Remove(trackableId);
+    }
+
+    private void ClearAllFlowers()
+    {
+        foreach (GameObject flower in spawnedFlowers.Values)
+        {
+            if (flower != null)
+            {
+                Destroy(flower);
+            }
+        }
+
+        spawnedFlowers.Clear();
+
+        if (flowerInfoCarousel != null)
+        {
+            flowerInfoCarousel.HidePanel();
+        }
     }
 }
