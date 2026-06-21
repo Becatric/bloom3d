@@ -18,4 +18,12 @@ public class SceneNavigation : MonoBehaviour
             LoadSceneMode.Single
         );
     }
+
+    public void OpenBouquetScene()
+    {
+        SceneManager.LoadScene(
+            "BouquetScene",
+            LoadSceneMode.Single
+        );
+    }
 }
