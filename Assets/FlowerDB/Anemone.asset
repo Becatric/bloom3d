@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 371fcced5420eda46b9cb39fda4431ce, type: 3}
+  m_Name: Anemone
+  m_EditorClassIdentifier: Assembly-CSharp::FlowerData
+  id: anemone
+  displayName: Anemone
+  scientificName: Anemone flaccida
+  markerImageName: anemone
+  description: "Anemone flaccida is a small, rhizomatous woodland perennial in the
+    buttercup family, Ranunculaceae. It grows to around 20\u201330 cm tall and gradually
+    spreads into soft colonies. Its lobed green leaves appear in spring, followed
+    by delicate white, cup-shaped flowers, usually carried singly above the foliage.
+    After flowering, the plant may become dormant until the following growing season."
+  origin: "East Asia \u2014 primarily China and Japan"
+  meaning: Anticipation, protection and gentle affection. Anemones are also sometimes
+    associated with fragility and the fleeting nature of beauty because their delicate
+    flowers move easily in the wind.
+  habitat: Moist, shaded woodland floors, stream banks, forest margins and valleys
+    with cool, humus-rich soil.
+  birthflower: Not an official traditional birth flower; best associated with spring.
+  floweringSeason: "April\u2013August, depending on climate and location"
+  sunlight: Partial shade to full shade. It grows best in gentle, filtered light
+    beneath trees and should be protected from strong afternoon sun.
+  watering: Keep the soil lightly and consistently moist during active growth. Water
+    when the upper layer of soil begins to feel dry, but avoid waterlogged conditions.
+    Reduce watering when the plant becomes dormant.
+  difficulty: Easy to Moderate
+  flowerImage: {fileID: 0}
+  flowerPrefab: {fileID: 919132149155446097, guid: 69c9b4eeea3614d4ab1b703aea3e4b5c, type: 3}

@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 848409ee8ba454f42a5ddff137688a27, type: 3}
+  m_Name: ReferenceImageLibrary
+  m_EditorClassIdentifier: 
+  m_GuidLow: 4928319314596136141
+  m_GuidHigh: 16404559068966144916
+  m_DataStore:
+    m_Storage: []
+  m_Images:
+  - m_SerializedGuid:
+      m_GuidLow: 5656771177230983100
+      m_GuidHigh: 5217980578491372985
+    m_SerializedTextureGuid:
+      m_GuidLow: 17993109229685605102
+      m_GuidHigh: 5724591378300010745
+    m_Size: {x: 0.1, y: 0.1}
+    m_SpecifySize: 1
+    m_Name: anemone
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5590616690922328876
+      m_GuidHigh: 11268809450314297736
+    m_SerializedTextureGuid:
+      m_GuidLow: 10224398458045277266
+      m_GuidHigh: 8698885567574740969
+    m_Size: {x: 0.1, y: 0.1}
+    m_SpecifySize: 1
+    m_Name: rose
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 4820710481759469079
+      m_GuidHigh: 11102084721216643484
+    m_SerializedTextureGuid:
+      m_GuidLow: 4711916501246862753
+      m_GuidHigh: 13704363768533677336
+    m_Size: {x: 0.1, y: 0.1}
+    m_SpecifySize: 1
+    m_Name: snowdrop
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 4778018295470434672
+      m_GuidHigh: 6634320360529669300
+    m_SerializedTextureGuid:
+      m_GuidLow: 10935960758103965435
+      m_GuidHigh: 15994318053438090411
+    m_Size: {x: 0.1, y: 0.1049744}
+    m_SpecifySize: 1
+    m_Name: azalea
+    m_Texture: {fileID: 0}
