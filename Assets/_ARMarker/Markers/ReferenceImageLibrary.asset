@@ -77,3 +77,13 @@ MonoBehaviour:
     m_SpecifySize: 1
     m_Name: tulip
     m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5355085049437539730
+      m_GuidHigh: 9287477261843913407
+    m_SerializedTextureGuid:
+      m_GuidLow: 3126854089420790817
+      m_GuidHigh: 9994082977708697097
+    m_Size: {x: 0.1, y: 0.14368232}
+    m_SpecifySize: 1
+    m_Name: bouquet
+    m_Texture: {fileID: 0}

@@ -28,6 +28,8 @@ public class FlowerImageTracker : MonoBehaviour
 
     private void Awake()
     {
+        if (AppModeManager.GetSelectedMode() != AppMode.Learning) { enabled = false; return; }
+
         if (trackedImageManager == null)
         {
             trackedImageManager =
@@ -44,6 +46,7 @@ public class FlowerImageTracker : MonoBehaviour
     {
         ClearAllFlowers();
 
+        if (!enabled) return;
         if (trackedImageManager != null)
         {
             trackedImageManager.trackablesChanged.AddListener(
