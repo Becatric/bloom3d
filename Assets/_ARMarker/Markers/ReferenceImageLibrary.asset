@@ -21,8 +21,8 @@ MonoBehaviour:
       m_GuidLow: 5656771177230983100
       m_GuidHigh: 5217980578491372985
     m_SerializedTextureGuid:
-      m_GuidLow: 17993109229685605102
-      m_GuidHigh: 5724591378300010745
+      m_GuidLow: 10224398458045277266
+      m_GuidHigh: 8698885567574740969
     m_Size: {x: 0.1, y: 0.1}
     m_SpecifySize: 1
     m_Name: anemone
@@ -31,8 +31,8 @@ MonoBehaviour:
       m_GuidLow: 5590616690922328876
       m_GuidHigh: 11268809450314297736
     m_SerializedTextureGuid:
-      m_GuidLow: 10224398458045277266
-      m_GuidHigh: 8698885567574740969
+      m_GuidLow: 17993109229685605102
+      m_GuidHigh: 5724591378300010745
     m_Size: {x: 0.1, y: 0.1}
     m_SpecifySize: 1
     m_Name: rose
@@ -56,4 +56,14 @@ MonoBehaviour:
     m_Size: {x: 0.1, y: 0.1049744}
     m_SpecifySize: 1
     m_Name: azalea
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5355085049437539730
+      m_GuidHigh: 9287477261843913407
+    m_SerializedTextureGuid:
+      m_GuidLow: 3126854089420790817
+      m_GuidHigh: 9994082977708697097
+    m_Size: {x: 0.1, y: 0.14368232}
+    m_SpecifySize: 1
+    m_Name: bouquet
     m_Texture: {fileID: 0}

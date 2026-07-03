@@ -4,5 +4,5 @@ using UnityEngine;
 // Add it to your flower prefabs, or BouquetManager adds it automatically at runtime.
 public class Flower : MonoBehaviour
 {
-    public FlowerType Type { get; set; }
+    public FlowerData Data { get; set; }
 }
