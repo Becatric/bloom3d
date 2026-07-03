@@ -42,12 +42,6 @@ public class BouquetModeController : MonoBehaviour
 
     private void Awake()
     {
-        // Bouquet mode only. In Learning mode this stays dormant and FlowerImageTracker runs.
-        if (AppModeManager.GetSelectedMode() != AppMode.Bouquet)
-        {
-            enabled = false;
-            return;
-        }
 
         if (trackedImageManager == null)
         {
@@ -63,12 +57,6 @@ public class BouquetModeController : MonoBehaviour
 
     private void OnEnable()
     {
-        // Skip subscribing when gated off in Awake (wrong mode).
-        if (!enabled)
-        {
-            return;
-        }
-
         if (trackedImageManager != null)
         {
             trackedImageManager.trackablesChanged.AddListener(

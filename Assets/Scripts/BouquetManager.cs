@@ -22,8 +22,6 @@ public class BouquetManager : MonoBehaviour
 
     Flower[] flowerArrangement = new Flower[0];
 
-    // --- Flower palette management (index-based) -------------------------------
-
     // Append a new flower; returns the index it landed at.
     public int AddFlower(FlowerData flower)
     {
@@ -31,9 +29,7 @@ public class BouquetManager : MonoBehaviour
         return flowers.Count - 1;
     }
 
-    // Replace whatever flower currently sits at 'index'. This is the "swap a flower
-    // in the bouquet" entry point: change the slot, re-run ArrangeFlowers with the
-    // same pattern, and every position that used that index updates.
+    // Replace whatever flower currently sits at 'index'
     public void SetFlower(int index, FlowerData flower)
     {
         if (index < 0) return;
@@ -48,8 +44,7 @@ public class BouquetManager : MonoBehaviour
         flowerCount = count;
     }
 
-    // Convenience: "00100 11011" -> indices [0,0,1,0,0, 1,1,0,1,1]. Spaces (and any
-    // non-digit) are ignored, so you can group for readability
+    // Convenience: "00100 11011" -> indices [0,0,1,0,0, 1,1,0,1,1]. Spaces are ignored
 
     public void ArrangeFlowers(string indexPattern)
     {
@@ -65,8 +60,7 @@ public class BouquetManager : MonoBehaviour
     }
 
     // The pattern is a list of INDICES into 'flowers', not flower references.
-    // It repeats (cycles) to fill flowerCount: pattern [0,0,1] over 7 flowers ->
-    // 0,0,1,0,0,1,0. Indices outside the palette wrap around.
+    // It repeats to fill flowerCount
     public void ArrangeFlowers(List<int> arrangementPattern)
     {
         if (flowers.Count == 0)
@@ -125,7 +119,7 @@ public class BouquetManager : MonoBehaviour
     // --- Positioning ----------------------------------------------------------
 
     // Rotates every flower so the bouquet fans out from one origin. Ring sizes
-    // double outward; outer rings tilt further, the last reaching maxBouquetSpread.
+    // expands outward; outer rings tilt further, the last reaching maxBouquetSpread.
     void PositionFlowers()
     {
         int baseCount = Mathf.Max(1, firstRingCount);
@@ -163,9 +157,11 @@ public class BouquetManager : MonoBehaviour
                 float azimuth = 360f * j / countThisRing + ringOffset;
 
                 // Tilt away from the up-axis (spread), THEN spin around it (azimuth).
+                // Before all: Random rotation around stem for ununiform look
                 Quaternion rotation =
                     Quaternion.AngleAxis(azimuth, Vector3.up) *
-                    Quaternion.AngleAxis(spread, Vector3.forward);
+                    Quaternion.AngleAxis(spread, Vector3.forward) *
+                    Quaternion.AngleAxis(Random.Range(0f,360f),Vector3.up);
 
                 Quaternion correction = Quaternion.Euler(-90f, 0f, 0f);
                 flowerArrangement[index].transform.localRotation = rotation * correction;
