@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,17 +11,15 @@ public class BouquetControls : MonoBehaviour
     [Header("Elements")]
     [SerializeField] private Slider _flowerCountSlider;
     [SerializeField] private BouquetManager _manager;
+    [SerializeField] private TextMeshProUGUI _flowerCountSliderText;
 
     void Start()
     {
-        if (AppModeManager.GetSelectedMode() != AppMode.Bouquet)
-        {
-            _controlPanel.SetActive(false);
-        }
-
         _flowerCountSlider.onValueChanged.AddListener((v) =>
         {
             _manager.SetFlowerCount((int)v);
+            _manager.ArrangeFlowers(new List<int>());
+            _flowerCountSliderText.text = string.Concat("Flower Count: ", v.ToString());
         });
     }
 

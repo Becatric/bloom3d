@@ -13,12 +13,20 @@ public class AppModeManager : MonoBehaviour
 
     public void StartLearningMode()
     {
-        SaveModeAndOpenAR(AppMode.Learning);
+        SaveMode(AppMode.Learning);
+        SceneManager.LoadScene("FlowerScannerScene");
     }
 
     public void StartBouquetMode()
     {
-        SaveModeAndOpenAR(AppMode.Bouquet);
+        SaveMode(AppMode.Bouquet);
+        SceneManager.LoadScene("BouquetBuilder");
+    }
+
+    public void SaveMode(AppMode mode)
+    {
+        PlayerPrefs.SetInt(SelectedModeKey, (int)mode);
+        PlayerPrefs.Save();
     }
 
     private void SaveModeAndOpenAR(AppMode mode)
