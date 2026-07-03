@@ -24,6 +24,7 @@ public class ModeDisplay : MonoBehaviour
         {
             AppMode.Learning => "Learning Mode",
             AppMode.Bouquet => "Bouquet Mode",
+            AppMode.AboutUs => "About Us Mode",
             _ => "Unknown Mode"
         };
 

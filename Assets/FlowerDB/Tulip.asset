@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 371fcced5420eda46b9cb39fda4431ce, type: 3}
-  m_Name: Tulip
+  m_Name: tulip
   m_EditorClassIdentifier: Assembly-CSharp::FlowerData
   id: tulip
   displayName: Tulip
@@ -37,5 +37,6 @@ MonoBehaviour:
     growth. Avoid excessive watering or permanently wet soil, as the bulbs can rot.
     Reduce watering after the foliage turns yellow and the bulb enters dormancy.
   difficulty: Easy to Moderate
+  arScale: 0.05
   flowerImage: {fileID: 0}
-  flowerPrefab: {fileID: 919132149155446097, guid: b8e4a225cebd4374789cfcd3217f430a, type: 3}
+  flowerPrefab: {fileID: 3119911586744638812, guid: b797362de5478a54aa8064a422c46ddd, type: 3}

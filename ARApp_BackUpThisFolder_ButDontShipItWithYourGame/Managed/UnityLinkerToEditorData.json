@@ -51,6 +51,7 @@
           {
             "name": "AudioBehaviour",
             "scenes": [
+              "Assets/Scenes/AboutUs.unity",
               "Assets/Scenes/FlowerScannerScene.unity",
               "Assets/Scenes/MainMenu.unity"
             ],
@@ -66,6 +67,7 @@
           {
             "name": "AudioListener",
             "scenes": [
+              "Assets/Scenes/AboutUs.unity",
               "Assets/Scenes/FlowerScannerScene.unity",
               "Assets/Scenes/MainMenu.unity"
             ],
@@ -116,6 +118,7 @@
           {
             "name": "Camera",
             "scenes": [
+              "Assets/Scenes/AboutUs.unity",
               "Assets/Scenes/FlowerScannerScene.unity",
               "Assets/Scenes/MainMenu.unity"
             ],
@@ -137,6 +140,7 @@
           {
             "name": "Cubemap",
             "scenes": [
+              "Assets/Scenes/AboutUs.unity",
               "Assets/Scenes/FlowerScannerScene.unity",
               "Assets/Scenes/MainMenu.unity"
             ],
@@ -158,6 +162,7 @@
           {
             "name": "EditorExtension",
             "scenes": [
+              "Assets/Scenes/AboutUs.unity",
               "Assets/Scenes/FlowerScannerScene.unity",
               "Assets/Scenes/MainMenu.unity"
             ],
@@ -173,6 +178,7 @@
           {
             "name": "GameObject",
             "scenes": [
+              "Assets/Scenes/AboutUs.unity",
               "Assets/Scenes/FlowerScannerScene.unity",
               "Assets/Scenes/MainMenu.unity"
             ],
@@ -206,6 +212,7 @@
           {
             "name": "LevelGameManager",
             "scenes": [
+              "Assets/Scenes/AboutUs.unity",
               "Assets/Scenes/FlowerScannerScene.unity",
               "Assets/Scenes/MainMenu.unity"
             ],
@@ -215,6 +222,7 @@
           {
             "name": "Light",
             "scenes": [
+              "Assets/Scenes/AboutUs.unity",
               "Assets/Scenes/FlowerScannerScene.unity",
               "Assets/Scenes/MainMenu.unity"
             ],
@@ -242,6 +250,7 @@
           {
             "name": "LightmapSettings",
             "scenes": [
+              "Assets/Scenes/AboutUs.unity",
               "Assets/Scenes/FlowerScannerScene.unity",
               "Assets/Scenes/MainMenu.unity"
             ],
@@ -263,6 +272,7 @@
           {
             "name": "Material",
             "scenes": [
+              "Assets/Scenes/AboutUs.unity",
               "Assets/Scenes/FlowerScannerScene.unity",
               "Assets/Scenes/MainMenu.unity"
             ],
@@ -296,6 +306,7 @@
           {
             "name": "MonoBehaviour",
             "scenes": [
+              "Assets/Scenes/AboutUs.unity",
               "Assets/Scenes/FlowerScannerScene.unity",
               "Assets/Scenes/MainMenu.unity"
             ],
@@ -311,6 +322,7 @@
           {
             "name": "MonoScript",
             "scenes": [
+              "Assets/Scenes/AboutUs.unity",
               "Assets/Scenes/FlowerScannerScene.unity",
               "Assets/Scenes/MainMenu.unity"
             ],
@@ -320,6 +332,7 @@
           {
             "name": "NamedObject",
             "scenes": [
+              "Assets/Scenes/AboutUs.unity",
               "Assets/Scenes/FlowerScannerScene.unity",
               "Assets/Scenes/MainMenu.unity"
             ],
@@ -359,6 +372,7 @@
           {
             "name": "RectTransform",
             "scenes": [
+              "Assets/Scenes/AboutUs.unity",
               "Assets/Scenes/FlowerScannerScene.unity",
               "Assets/Scenes/MainMenu.unity"
             ],
@@ -374,6 +388,7 @@
           {
             "name": "RenderSettings",
             "scenes": [
+              "Assets/Scenes/AboutUs.unity",
               "Assets/Scenes/FlowerScannerScene.unity",
               "Assets/Scenes/MainMenu.unity"
             ],
@@ -407,6 +422,7 @@
           {
             "name": "Shader",
             "scenes": [
+              "Assets/Scenes/AboutUs.unity",
               "Assets/Scenes/FlowerScannerScene.unity",
               "Assets/Scenes/MainMenu.unity"
             ],
@@ -442,6 +458,7 @@
           {
             "name": "Sprite",
             "scenes": [
+              "Assets/Scenes/AboutUs.unity",
               "Assets/Scenes/FlowerScannerScene.unity",
               "Assets/Scenes/MainMenu.unity"
             ],
@@ -567,6 +584,12 @@
             "scenes": [],
             "dependencyType": 2,
             "icon": "package/com.unity.modules.identifiers"
+          },
+          {
+            "name": "Required by ImageConversion Module",
+            "scenes": [],
+            "dependencyType": 2,
+            "icon": "package/com.unity.modules.imageconversion"
           },
           {
             "name": "Required by Input Module",
@@ -811,6 +834,10 @@
         ]
       },
       {
+        "name": "ImageConversion",
+        "dependencies": []
+      },
+      {
         "name": "Input",
         "dependencies": [
           {
@@ -971,7 +998,9 @@
         "dependencies": [
           {
             "name": "BoxCollider",
-            "scenes": [],
+            "scenes": [
+              "Assets/Scenes/FlowerScannerScene.unity"
+            ],
             "dependencyType": 0,
             "icon": null
           },
@@ -990,12 +1019,14 @@
           {
             "name": "Collider",
             "scenes": [],
-            "dependencyType": 0,
+            "dependencyType": 1,
             "icon": null
           },
           {
             "name": "MeshCollider",
-            "scenes": [],
+            "scenes": [
+              "Assets/Scenes/FlowerScannerScene.unity"
+            ],
             "dependencyType": 0,
             "icon": null
           },
@@ -1155,6 +1186,12 @@
             "scenes": [],
             "dependencyType": 2,
             "icon": "package/com.unity.modules.identifiers"
+          },
+          {
+            "name": "Required by ImageConversion Module",
+            "scenes": [],
+            "dependencyType": 2,
+            "icon": "package/com.unity.modules.imageconversion"
           },
           {
             "name": "Required by Input Module",
@@ -1388,6 +1425,12 @@
             "scenes": [],
             "dependencyType": 2,
             "icon": "package/com.unity.modules.identifiers"
+          },
+          {
+            "name": "Required by ImageConversion Module",
+            "scenes": [],
+            "dependencyType": 2,
+            "icon": "package/com.unity.modules.imageconversion"
           },
           {
             "name": "Required by Input Module",
@@ -1700,6 +1743,7 @@
           {
             "name": "Canvas",
             "scenes": [
+              "Assets/Scenes/AboutUs.unity",
               "Assets/Scenes/FlowerScannerScene.unity",
               "Assets/Scenes/MainMenu.unity"
             ],
@@ -1715,6 +1759,7 @@
           {
             "name": "CanvasRenderer",
             "scenes": [
+              "Assets/Scenes/AboutUs.unity",
               "Assets/Scenes/FlowerScannerScene.unity",
               "Assets/Scenes/MainMenu.unity"
             ],

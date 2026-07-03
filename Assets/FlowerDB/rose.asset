@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 371fcced5420eda46b9cb39fda4431ce, type: 3}
+  m_Name: rose
+  m_EditorClassIdentifier: Assembly-CSharp::FlowerData
+  id: rose
+  displayName: Rose
+  scientificName: "Rosa \xD7 hybrida"
+  markerImageName: rose
+  description: The rose is a flowering shrub admired for its layered petals, elegant
+    shape and wide range of colours. Garden roses have been developed through centuries
+    of cultivation and hybridisation. Their flowers may be single or densely petalled,
+    and many varieties have a strong, sweet fragrance. Roses are widely grown in
+    gardens and are among the most popular flowers used in bouquets.
+  origin: Cultivated hybrids developed from rose species native mainly to Europe,
+    Asia, North America and North Africa
+  meaning: 'Love, beauty and affection. Red roses represent romantic love, pink roses
+    represent admiration and gratitude, white roses represent purity and remembrance,
+    yellow roses represent friendship and joy, and orange roses represent enthusiasm
+    and desire. '
+  habitat: Gardens, parks, hedges and open sunny areas with fertile, moisture-retentive
+    but well-drained soil.
+  birthflower: June
+  floweringSeason: 'Late spring to autumn, usually from May to October, depending
+    on the variety and climate '
+  sunlight: 'Full sun is best. Provide at least six hours of direct sunlight each
+    day. Some varieties can tolerate partial shade, but they may produce fewer flowers. '
+  watering: 'Water deeply when the upper layer of soil begins to dry. Direct the
+    water toward the base of the plant and avoid regularly wetting the leaves. Keep
+    the soil evenly moist, especially during hot weather, but do not allow it to
+    become waterlogged. '
+  difficulty: Moderate
+  arScale: 0.05
+  flowerImage: {fileID: 0}
+  flowerPrefab: {fileID: 6430131151112867770, guid: c383a94b5a83935418e4e3097445697e, type: 3}

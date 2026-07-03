@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 371fcced5420eda46b9cb39fda4431ce, type: 3}
+  m_Name: snowdrop
+  m_EditorClassIdentifier: Assembly-CSharp::FlowerData
+  id: snowdrop
+  displayName: Snow drop
+  scientificName: 'Galanthus nivalis '
+  markerImageName: snowdrop
+  description: The common snowdrop is a small perennial bulb that flowers near the
+    end of winter. Each slender stem usually carries one nodding white flower with
+    three larger outer petals and smaller inner petals marked with green. Its narrow
+    leaves emerge through cold ground, sometimes even through snow, making it one
+    of the earliest signs of approaching spring.
+  origin: "Europe \u2014 from the Pyrenees eastward to Ukraine"
+  meaning: Hope, renewal, purity, consolation and the arrival of spring. Because
+    it flowers during winter, it is often viewed as a symbol of perseverance.
+  habitat: Deciduous woodlands, forest edges, riverbanks, meadows and shaded gardens
+    with moist, fertile and well-drained soil.
+  birthflower: January
+  floweringSeason: January to March, depending on the local climate
+  sunlight: Partial shade is ideal, especially beneath deciduous trees. It can tolerate
+    winter sun while the trees have no leaves.
+  watering: Keep the soil moderately moist during active growth. Avoid letting it
+    remain waterlogged. Once the leaves die back and the bulb becomes dormant, only
+    minimal additional watering is required.
+  difficulty: Easy
+  arScale: 0.05
+  flowerImage: {fileID: 0}
+  flowerPrefab: {fileID: 1786002720451721687, guid: 1e7d236e4a0522b45b68d58646c121e2, type: 3}

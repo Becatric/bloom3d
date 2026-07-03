@@ -22,7 +22,15 @@ public class SceneNavigation : MonoBehaviour
     public void OpenBouquetScene()
     {
         SceneManager.LoadScene(
-            "BouquetScene",
+            "BouquetBuilder",
+            LoadSceneMode.Single
+        );
+    }
+
+    public void OpenAboutUS()
+    {
+        SceneManager.LoadScene(
+            "AboutUs",
             LoadSceneMode.Single
         );
     }

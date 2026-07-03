@@ -4,7 +4,8 @@ using UnityEngine.SceneManagement;
 public enum AppMode
 {
     Learning,
-    Bouquet
+    Bouquet,
+    AboutUs
 }
 
 public class AppModeManager : MonoBehaviour
@@ -13,20 +14,42 @@ public class AppModeManager : MonoBehaviour
 
     public void StartLearningMode()
     {
-        SaveModeAndOpenAR(AppMode.Learning);
+        SaveMode(AppMode.Learning);
+
+        SceneManager.LoadScene(
+            "FlowerScannerScene",
+            LoadSceneMode.Single
+        );
     }
 
     public void StartBouquetMode()
     {
-        SaveModeAndOpenAR(AppMode.Bouquet);
+        SaveMode(AppMode.Bouquet);
+
+        SceneManager.LoadScene(
+            "BouquetBuilder",
+            LoadSceneMode.Single
+        );
     }
 
-    private void SaveModeAndOpenAR(AppMode mode)
+    public void StartAboutUsMode()
     {
-        PlayerPrefs.SetInt(SelectedModeKey, (int)mode);
-        PlayerPrefs.Save();
+        SaveMode(AppMode.AboutUs);
 
-        SceneManager.LoadScene("FlowerScannerScene");
+        SceneManager.LoadScene(
+            "AboutUs",
+            LoadSceneMode.Single
+        );
+    }
+
+    private void SaveMode(AppMode mode)
+    {
+        PlayerPrefs.SetInt(
+            SelectedModeKey,
+            (int)mode
+        );
+
+        PlayerPrefs.Save();
     }
 
     public static AppMode GetSelectedMode()
