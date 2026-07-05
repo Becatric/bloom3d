@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 371fcced5420eda46b9cb39fda4431ce, type: 3}
-  m_Name: anemone
+  m_Name: Anemone
   m_EditorClassIdentifier: Assembly-CSharp::FlowerData
   id: anemone
   displayName: Anemone
@@ -35,6 +35,6 @@ MonoBehaviour:
     when the upper layer of soil begins to feel dry, but avoid waterlogged conditions.
     Reduce watering when the plant becomes dormant.
   difficulty: Easy to Moderate
-  arScale: 0.05
+  arScale: 0.15
   flowerImage: {fileID: 0}
   flowerPrefab: {fileID: 3007897668549709305, guid: 9c3629cd3fcfa6141b31b033f8b705a9, type: 3}

@@ -6,20 +6,19 @@ using UnityEngine.XR.ARSubsystems;
 public class FlowerImageTracker : MonoBehaviour
 {
     [Header("AR")]
-    [SerializeField]
-    private ARTrackedImageManager trackedImageManager;
+    [SerializeField] private ARTrackedImageManager trackedImageManager;
 
     [Header("Flower Database")]
-    [SerializeField]
-    private FlowerDatabase flowerDatabase;
+    [SerializeField] private FlowerDatabase flowerDatabase;
 
     [Header("Flower Info UI")]
-    [SerializeField]
-    private FlowerInfoCarousel flowerInfoCarousel;
+    [SerializeField] private FlowerInfoCarousel flowerInfoCarousel;
 
     [Header("Tracking Behavior")]
-    [SerializeField]
-    private bool hideContentWhenMarkerIsLost = true;
+    [SerializeField] private bool hideContentWhenMarkerIsLost = true;
+
+    [Header("Debug")]
+    [SerializeField] private ARDebugDisplay debugDisplay;
 
     private readonly Dictionary<TrackableId, GameObject> spawnedFlowers =
         new Dictionary<TrackableId, GameObject>();
@@ -30,8 +29,7 @@ public class FlowerImageTracker : MonoBehaviour
     {
         if (trackedImageManager == null)
         {
-            trackedImageManager =
-                GetComponent<ARTrackedImageManager>();
+            trackedImageManager = GetComponent<ARTrackedImageManager>();
         }
     }
 
@@ -44,7 +42,6 @@ public class FlowerImageTracker : MonoBehaviour
     {
         ClearAllFlowers();
 
-        if (!enabled) return;
         if (trackedImageManager != null)
         {
             trackedImageManager.trackablesChanged.AddListener(
@@ -138,31 +135,22 @@ public class FlowerImageTracker : MonoBehaviour
 
         flower.SetActive(true);
         currentlyVisibleTrackableId = trackedImage.trackableId;
+
+        FlowerData flowerData = GetFlowerData(trackedImage);
+
+        if (flowerData != null)
+        {
+            UpdateFlowerUI(flowerData);
+            UpdateDebugUI(flower, flowerData);
+        }
     }
 
     private GameObject SpawnFlower(ARTrackedImage trackedImage)
     {
-        if (flowerDatabase == null)
-        {
-            Debug.LogError(
-                "Flower Database is not assigned in FlowerImageTracker."
-            );
-
-            return null;
-        }
-
-        string markerName =
-            trackedImage.referenceImage.name;
-
-        FlowerData flowerData =
-            flowerDatabase.GetFlowerByMarkerName(markerName);
+        FlowerData flowerData = GetFlowerData(trackedImage);
 
         if (flowerData == null)
         {
-            Debug.LogWarning(
-                $"No FlowerData found for marker: {markerName}"
-            );
-
             return null;
         }
 
@@ -190,16 +178,82 @@ public class FlowerImageTracker : MonoBehaviour
             flower
         );
 
+        ARFlowerManipulator manipulator =
+            flower.GetComponent<ARFlowerManipulator>();
+
+        if (manipulator != null)
+        {
+            manipulator.InitializeDebug(
+                debugDisplay,
+                flowerData.displayName,
+                flowerData.arScale
+            );
+        }
+
+        Debug.Log(
+            $"Spawned {flowerData.displayName} for marker {trackedImage.referenceImage.name}"
+        );
+
+        return flower;
+    }
+
+    private FlowerData GetFlowerData(ARTrackedImage trackedImage)
+    {
+        if (flowerDatabase == null)
+        {
+            Debug.LogError(
+                "Flower Database is not assigned in FlowerImageTracker."
+            );
+
+            return null;
+        }
+
+        string markerName = trackedImage.referenceImage.name;
+
+        FlowerData flowerData =
+            flowerDatabase.GetFlowerByMarkerName(markerName);
+
+        if (flowerData == null)
+        {
+            Debug.LogWarning(
+                $"No FlowerData found for marker: {markerName}"
+            );
+        }
+
+        return flowerData;
+    }
+
+    private void UpdateFlowerUI(FlowerData flowerData)
+    {
         if (flowerInfoCarousel != null)
         {
             flowerInfoCarousel.ShowFlower(flowerData);
         }
+    }
 
-        Debug.Log(
-            $"Spawned {flowerData.displayName} for marker {markerName}"
+    private void UpdateDebugUI(GameObject flower, FlowerData flowerData)
+    {
+        if (debugDisplay == null)
+        {
+            return;
+        }
+
+        ARFlowerManipulator manipulator =
+            flower.GetComponent<ARFlowerManipulator>();
+
+        float scaleMultiplier = 1f;
+
+        if (manipulator != null)
+        {
+            scaleMultiplier = manipulator.CurrentScaleMultiplier;
+        }
+
+        debugDisplay.ShowFlowerScale(
+            flowerData.displayName,
+            flowerData.arScale,
+            scaleMultiplier,
+            flower.transform.localScale
         );
-
-        return flower;
     }
 
     private void HideFlower(TrackableId trackableId)
