@@ -164,7 +164,7 @@ public class BouquetManager : MonoBehaviour
                     Quaternion.AngleAxis(Random.Range(0f,360f),Vector3.up);
 
                 Quaternion correction = Quaternion.Euler(-90f, 0f, 0f);
-                flowerArrangement[index].transform.localRotation = rotation * correction;
+                flowerArrangement[index].transform.localRotation = rotation;
             }
 
             ringSize *= 2; // each new ring holds double the previous one
