@@ -280,7 +280,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 608914943}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf796b3608abea240b0a5825c43a99b2, type: 3}
   m_Name: 
@@ -551,8 +551,8 @@ MonoBehaviour:
     and Beatrice Maria Ma\u021Bcu Zbranca as a project for the Augmented Reality
     course, Summer Semester 2026.</size>\r\n"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 0a15377f2ac92cb458bbb6a28d04c40e, type: 2}
-  m_sharedMaterial: {fileID: -7303063989875526440, guid: 0a15377f2ac92cb458bbb6a28d04c40e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c20d18adea02a6b41a6ce01f07999ad2, type: 2}
+  m_sharedMaterial: {fileID: 4491374900733078177, guid: c20d18adea02a6b41a6ce01f07999ad2, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
