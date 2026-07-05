@@ -13,10 +13,12 @@ public class FlowerInfoCarousel : MonoBehaviour
 
     [Header("Panel Movement")]
     [SerializeField]
-    private float expandedY = 425f;
+    [Tooltip("Expanded panel Y as a percentage of the parent/canvas height.")]
+    private float expandedYPercent = 0.35f;
 
     [SerializeField]
-    private float collapsedY = -300f;
+    [Tooltip("Collapsed panel Y as a percentage of the parent/canvas height.")]
+    private float collapsedYPercent = -0.20f;
 
     [SerializeField]
     private float animationDuration = 0.3f;
@@ -229,7 +231,7 @@ public class FlowerInfoCarousel : MonoBehaviour
             toggleArrowText.text = "▲";
         }
 
-        StartPanelMovement(collapsedY);
+        StartPanelMovement(GetPanelYFromPercent(collapsedYPercent));
     }
 
     public void ExpandPanel()
@@ -246,7 +248,7 @@ public class FlowerInfoCarousel : MonoBehaviour
             toggleArrowText.text = "▼";
         }
 
-        StartPanelMovement(expandedY);
+        StartPanelMovement(GetPanelYFromPercent(expandedYPercent));
     }
 
     public void HidePanel()
@@ -277,7 +279,7 @@ public class FlowerInfoCarousel : MonoBehaviour
         Vector2 position =
             panelRectTransform.anchoredPosition;
 
-        position.y = expandedY;
+        position.y = GetPanelYFromPercent(expandedYPercent);
 
         panelRectTransform.anchoredPosition = position;
         isExpanded = true;
@@ -286,6 +288,25 @@ public class FlowerInfoCarousel : MonoBehaviour
         {
             toggleArrowText.text = "▼";
         }
+    }
+
+
+    private float GetPanelYFromPercent(float yPercent)
+    {
+        if (panelRectTransform == null)
+        {
+            return 0f;
+        }
+
+        RectTransform parentRectTransform =
+            panelRectTransform.parent as RectTransform;
+
+        if (parentRectTransform == null)
+        {
+            return yPercent;
+        }
+
+        return parentRectTransform.rect.height * yPercent;
     }
 
     private void StartPanelMovement(float targetY)

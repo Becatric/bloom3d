@@ -19,9 +19,17 @@ public class ARFlowerManipulator : MonoBehaviour
     [SerializeField] private float pinchSpeed = 0.005f;
     [SerializeField] private float minimumScale = 0.3f;
     [SerializeField] private float maximumScale = 3f;
+    
+    public float CurrentScaleMultiplier { get; private set; } = 1f;
+    public Vector3 InitialScale => initialScale;
+    public Vector3 CurrentScale => transform.localScale;
 
     private bool isSelected;
     private Vector3 initialScale;
+    
+    private ARDebugDisplay debugDisplay;
+    private string flowerName;
+    private float arDisplayScale = 1f;
 
     private void Awake()
     {
@@ -29,8 +37,6 @@ public class ARFlowerManipulator : MonoBehaviour
         {
             arCamera = Camera.main;
         }
-
-        initialScale = transform.localScale;
     }
 
     private void OnEnable()
@@ -41,6 +47,11 @@ public class ARFlowerManipulator : MonoBehaviour
     private void OnDisable()
     {
         EnhancedTouchSupport.Disable();
+    }
+    
+    private void Start()
+    {
+        initialScale = transform.localScale;
     }
 
     private void Update()
@@ -127,6 +138,34 @@ public class ARFlowerManipulator : MonoBehaviour
             isSelected = false;
         }
     }
+    
+    public void InitializeDebug(
+        ARDebugDisplay display,
+        string name,
+        float displayScale
+    )
+    {
+        debugDisplay = display;
+        flowerName = name;
+        arDisplayScale = displayScale;
+
+        UpdateDebugDisplay();
+    }
+
+    private void UpdateDebugDisplay()
+    {
+        if (debugDisplay == null)
+        {
+            return;
+        }
+
+        debugDisplay.ShowFlowerScale(
+            flowerName,
+            arDisplayScale,
+            CurrentScaleMultiplier,
+            transform.localScale
+        );
+    }
 
     private void HandlePinch(Touch firstTouch, Touch secondTouch)
     {
@@ -163,9 +202,12 @@ public class ARFlowerManipulator : MonoBehaviour
             minimumScale,
             maximumScale
         );
+        
+        CurrentScaleMultiplier = relativeScale;
 
-        transform.localScale =
-            initialScale * relativeScale;
+        transform.localScale = initialScale * CurrentScaleMultiplier;
+
+        UpdateDebugDisplay();
     }
 
     private void HandleMovement(

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 371fcced5420eda46b9cb39fda4431ce, type: 3}
-  m_Name: azalea
+  m_Name: Azalea
   m_EditorClassIdentifier: Assembly-CSharp::FlowerData
   id: azalea
   displayName: Azalea
@@ -37,6 +37,6 @@ MonoBehaviour:
     surface begins to feel slightly dry. Rainwater or low-mineral water is preferable
     because azaleas dislike alkaline conditions.
   difficulty: Moderate
-  arScale: 0.5
+  arScale: 6
   flowerImage: {fileID: 0}
   flowerPrefab: {fileID: 3759831066678046793, guid: 4eb2a005927d7804c8a56b09ddf5f2bf, type: 3}

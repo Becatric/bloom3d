@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 371fcced5420eda46b9cb39fda4431ce, type: 3}
-  m_Name: rose
+  m_Name: Rose
   m_EditorClassIdentifier: Assembly-CSharp::FlowerData
   id: rose
   displayName: Rose
@@ -41,4 +41,4 @@ MonoBehaviour:
   difficulty: Moderate
   arScale: 0.05
   flowerImage: {fileID: 0}
-  flowerPrefab: {fileID: 6430131151112867770, guid: c383a94b5a83935418e4e3097445697e, type: 3}
+  flowerPrefab: {fileID: 2009436791736210181, guid: 1575259409d0b234abb78e75414e8f3f, type: 3}
