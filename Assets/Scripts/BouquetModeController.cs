@@ -23,12 +23,32 @@ public class BouquetModeController : MonoBehaviour
 
     [SerializeField]
     private float bouquetScale = 1f;
+    
+    [Header("Bouquet Position")]
+    [SerializeField]
+    private float bouquetHeightOffset = 0f;
+    
+    public float BouquetHeightOffset => bouquetHeightOffset;
+
+    [Header("Wrapping Markers")]
+    [SerializeField]
+    private string paperMarkerName = "paper";
+
+    [SerializeField]
+    private string bowMarkerName = "bow";
+
+    [Header("Wrapping Prefabs")]
+    [SerializeField]
+    private GameObject paperWrappingPrefab;
+
+    [SerializeField]
+    private GameObject bowWrappingPrefab;
 
     [Header("Bouquet Control UI")]
     [SerializeField]
     private BouquetControls bouquetControls;
 
-    // Flower markers currently visible (the bouquet marker is excluded from this set).
+    // Flower markers currently visible. The bouquet, paper, and bow markers are excluded from this set.
     private readonly Dictionary<TrackableId, string> visibleFlowerMarkers =
         new Dictionary<TrackableId, string>();
 
@@ -36,13 +56,20 @@ public class BouquetModeController : MonoBehaviour
     private Transform bouquetAnchor;
     private TrackableId bouquetAnchorId;
 
-    // Guards against rebuilding the bouquet every frame 
-    // only re-arrange when the visible set of markers change
+    private TrackableId paperWrappingMarkerId;
+    private TrackableId bowWrappingMarkerId;
+    private bool isPaperWrappingVisible;
+    private bool isBowWrappingVisible;
+
+    private GameObject paperWrappingInstance;
+    private GameObject bowWrappingInstance;
+
+    // Guards against rebuilding the bouquet every frame.
+    // Re-arrange only when the visible marker set changes.
     private string lastSignature;
 
     private void Awake()
     {
-
         if (trackedImageManager == null)
         {
             trackedImageManager = GetComponent<ARTrackedImageManager>();
@@ -59,9 +86,7 @@ public class BouquetModeController : MonoBehaviour
     {
         if (trackedImageManager != null)
         {
-            trackedImageManager.trackablesChanged.AddListener(
-                OnTrackedImagesChanged
-            );
+            trackedImageManager.trackablesChanged.AddListener(OnTrackedImagesChanged);
         }
     }
 
@@ -69,21 +94,21 @@ public class BouquetModeController : MonoBehaviour
     {
         if (trackedImageManager != null)
         {
-            trackedImageManager.trackablesChanged.RemoveListener(
-                OnTrackedImagesChanged
-            );
+            trackedImageManager.trackablesChanged.RemoveListener(OnTrackedImagesChanged);
         }
 
         visibleFlowerMarkers.Clear();
         bouquetAnchor = null;
         bouquetAnchorId = default;
+        paperWrappingMarkerId = default;
+        bowWrappingMarkerId = default;
+        isPaperWrappingVisible = false;
+        isBowWrappingVisible = false;
         lastSignature = null;
         HideBouquet();
     }
 
-    private void OnTrackedImagesChanged(
-        ARTrackablesChangedEventArgs<ARTrackedImage> eventArgs
-    )
+    private void OnTrackedImagesChanged(ARTrackablesChangedEventArgs<ARTrackedImage> eventArgs)
     {
         foreach (ARTrackedImage image in eventArgs.added)
         {
@@ -95,10 +120,7 @@ public class BouquetModeController : MonoBehaviour
             ApplyMarkerState(image);
         }
 
-        foreach (
-            KeyValuePair<TrackableId, ARTrackedImage> removed
-            in eventArgs.removed
-        )
+        foreach (KeyValuePair<TrackableId, ARTrackedImage> removed in eventArgs.removed)
         {
             RemoveMarker(removed.Key);
         }
@@ -107,7 +129,7 @@ public class BouquetModeController : MonoBehaviour
     }
 
     // Add or remove markers to keep track of:
-    // For flowers add them to the bouquet list, for the bouquet marker save important info
+    // bouquet marker = anchor, flower markers = flower list, wrapping markers = optional decorations.
     private void ApplyMarkerState(ARTrackedImage image)
     {
         bool isVisible = image.trackingState == TrackingState.Tracking;
@@ -129,6 +151,20 @@ public class BouquetModeController : MonoBehaviour
             return;
         }
 
+        if (IsPaperWrappingMarker(markerName))
+        {
+            isPaperWrappingVisible = isVisible;
+            paperWrappingMarkerId = isVisible ? image.trackableId : default;
+            return;
+        }
+
+        if (IsBowWrappingMarker(markerName))
+        {
+            isBowWrappingVisible = isVisible;
+            bowWrappingMarkerId = isVisible ? image.trackableId : default;
+            return;
+        }
+
         if (isVisible)
         {
             visibleFlowerMarkers[image.trackableId] = markerName;
@@ -147,6 +183,18 @@ public class BouquetModeController : MonoBehaviour
         {
             bouquetAnchor = null;
             bouquetAnchorId = default;
+        }
+
+        if (trackableId == paperWrappingMarkerId)
+        {
+            isPaperWrappingVisible = false;
+            paperWrappingMarkerId = default;
+        }
+
+        if (trackableId == bowWrappingMarkerId)
+        {
+            isBowWrappingVisible = false;
+            bowWrappingMarkerId = default;
         }
     }
 
@@ -176,8 +224,12 @@ public class BouquetModeController : MonoBehaviour
         }
 
         Transform bouquetTransform = bouquetManager.transform;
+        
         bouquetTransform.SetParent(bouquetAnchor, false);
-        bouquetTransform.localPosition = Vector3.zero;
+        
+        bouquetTransform.localPosition =
+            Vector3.up * bouquetHeightOffset;
+        
         bouquetTransform.localRotation = Quaternion.identity;
         bouquetTransform.localScale = Vector3.one * bouquetScale;
 
@@ -187,6 +239,8 @@ public class BouquetModeController : MonoBehaviour
         // Empty pattern -> BouquetManager walks every palette slot in order, cycling
         // to fill its configured flowerCount.
         bouquetManager.ArrangeFlowers(new List<int>());
+
+        UpdateWrappingInstances();
     }
 
     // Distinct, deterministically-ordered FlowerData contributed by visible markers.
@@ -201,8 +255,7 @@ public class BouquetModeController : MonoBehaviour
 
         foreach (string markerName in visibleFlowerMarkers.Values)
         {
-            FlowerData data =
-                flowerDatabase.GetFlowerByMarkerName(markerName);
+            FlowerData data = flowerDatabase.GetFlowerByMarkerName(markerName);
 
             if (data == null || data.flowerPrefab == null)
             {
@@ -215,16 +268,78 @@ public class BouquetModeController : MonoBehaviour
             }
         }
 
+        // The same marker set always yields the same bouquet.
         result.Sort((a, b) => string.Compare(a.id, b.id, System.StringComparison.Ordinal));
-        // so the same set of markers always yields the same bouquet
         return result;
     }
 
-    // Cheap change-detection key: anchor presence + the set of flower instance IDs.
+    private void UpdateWrappingInstances()
+    {
+        SetWrappingVisible(
+            ref paperWrappingInstance,
+            paperWrappingPrefab,
+            isPaperWrappingVisible
+        );
+
+        SetWrappingVisible(
+            ref bowWrappingInstance,
+            bowWrappingPrefab,
+            isBowWrappingVisible
+        );
+    }
+
+    private void SetWrappingVisible(
+        ref GameObject instance,
+        GameObject prefab,
+        bool isVisible)
+    {
+        if (prefab == null)
+        {
+            return;
+        }
+
+        if (bouquetAnchor == null)
+        {
+            if (instance != null)
+            {
+                instance.SetActive(false);
+            }
+
+            return;
+        }
+
+        if (instance == null)
+        {
+            instance = Instantiate(prefab);
+        }
+
+        // Wrapping is attached directly to the bouquet marker,
+        // not to BouquetManager.
+        if (instance.transform.parent != bouquetAnchor)
+        {
+            instance.transform.SetParent(bouquetAnchor, false);
+        }
+
+        // Preserve the transform saved in the prefab.
+        instance.transform.localPosition =
+            prefab.transform.localPosition;
+
+        instance.transform.localRotation =
+            prefab.transform.localRotation;
+
+        instance.transform.localScale =
+            prefab.transform.localScale;
+
+        instance.SetActive(isVisible);
+    }
+
+    // Cheap change-detection key: anchor presence + flowers + wrapping markers.
     private string BuildSignature(List<FlowerData> flowers)
     {
         StringBuilder builder = new StringBuilder();
-        builder.Append(bouquetAnchor != null ? "A|" : "-|");
+        builder.Append(bouquetAnchor != null ? "A|" : "-| ");
+        builder.Append(isPaperWrappingVisible ? "P|" : "-| ");
+        builder.Append(isBowWrappingVisible ? "B|" : "-| ");
 
         foreach (FlowerData flower in flowers)
         {
@@ -237,6 +352,16 @@ public class BouquetModeController : MonoBehaviour
 
     private void HideBouquet()
     {
+        if (paperWrappingInstance != null)
+        {
+            paperWrappingInstance.SetActive(false);
+        }
+
+        if (bowWrappingInstance != null)
+        {
+            bowWrappingInstance.SetActive(false);
+        }
+
         if (bouquetManager != null)
         {
             bouquetManager.gameObject.SetActive(false);
@@ -250,5 +375,34 @@ public class BouquetModeController : MonoBehaviour
             bouquetMarkerName,
             System.StringComparison.OrdinalIgnoreCase
         );
+    }
+
+    private bool IsPaperWrappingMarker(string markerName)
+    {
+        return string.Equals(
+            markerName,
+            paperMarkerName,
+            System.StringComparison.OrdinalIgnoreCase
+        );
+    }
+
+    private bool IsBowWrappingMarker(string markerName)
+    {
+        return string.Equals(
+            markerName,
+            bowMarkerName,
+            System.StringComparison.OrdinalIgnoreCase
+        );
+    }
+    
+    public void SetBouquetHeightOffset(float value)
+    {
+        bouquetHeightOffset = value;
+
+        if (bouquetManager != null && bouquetAnchor != null)
+        {
+            bouquetManager.transform.localPosition =
+                Vector3.up * bouquetHeightOffset;
+        }
     }
 }

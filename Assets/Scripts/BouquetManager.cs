@@ -4,63 +4,74 @@ using UnityEngine;
 public class BouquetManager : MonoBehaviour
 {
     [Tooltip("How many flowers the innermost ring holds. Each ring outward grows in size according to the ring growth rate.")]
-    public int firstRingCount = 2;
+    public int firstRingCount = 6;
 
-    [Tooltip("The ratio of how many flowers every further outer ring can hold. 2 = number doubles every ring")]
+    [Tooltip("The ratio of how many flowers every further outer ring can hold. 2 = number doubles every ring.")]
     public int ringGrowthRate = 2;
 
-    [Tooltip("Set the amount of flowers the bouquet should contain")]
+    [Tooltip("Set the amount of flowers the bouquet should contain.")]
     public int flowerCount = 8;
 
-    [Tooltip("Set the density of the rows, by changing the maximum angle the bouquet extends to")]
-    public int maxBouquetSpread = 48;
+    [Tooltip("The maximum angle in degrees between the bouquet vertical axis and the outermost flowers.")]
+    public int maxBouquetSpread = 20;
 
-    [Tooltip("The flowers this bouquet can use (FlowerData from the FlowerDatabase). The pattern " +
-             "references these BY INDEX, so swapping a slot here (or via SetFlower) re-skins the " +
-             "bouquet without touching the pattern.")]
+    [Tooltip("The flowers this bouquet can use (FlowerData from the FlowerDatabase). The pattern references these by index.")]
     public List<FlowerData> flowers = new List<FlowerData>();
 
-    Flower[] flowerArrangement = new Flower[0];
+    private Flower[] flowerArrangement = new Flower[0];
 
-    // Append a new flower; returns the index it landed at.
     public int AddFlower(FlowerData flower)
     {
         flowers.Add(flower);
         return flowers.Count - 1;
     }
 
-    // Replace whatever flower currently sits at 'index'
     public void SetFlower(int index, FlowerData flower)
     {
         if (index < 0) return;
-        while (flowers.Count <= index) flowers.Add(null);
+
+        while (flowers.Count <= index)
+            flowers.Add(null);
+
         flowers[index] = flower;
     }
 
-    // --- Arrangement ----------------------------------------------------------
-
     public void SetFlowerCount(int count)
     {
-        flowerCount = count;
+        flowerCount = Mathf.Max(0, count);
     }
 
-    // Convenience: "00100 11011" -> indices [0,0,1,0,0, 1,1,0,1,1]. Spaces are ignored
+    public void SetMaxBouquetSpread(int value)
+    {
+        maxBouquetSpread = Mathf.Max(0, value);
+    }
+
+    public void SetFirstRingCount(int value)
+    {
+        firstRingCount = Mathf.Max(1, value);
+    }
+
+    public void SetRingGrowthRate(int value)
+    {
+        ringGrowthRate = Mathf.Max(1, value);
+    }
 
     public void ArrangeFlowers(string indexPattern)
     {
         List<int> pattern = new List<int>();
+
         if (indexPattern != null)
         {
             foreach (char c in indexPattern)
             {
-                if (char.IsDigit(c)) pattern.Add(c - '0');
+                if (char.IsDigit(c))
+                    pattern.Add(c - '0');
             }
         }
+
         ArrangeFlowers(pattern);
     }
 
-    // The pattern is a list of INDICES into 'flowers', not flower references.
-    // It repeats to fill flowerCount
     public void ArrangeFlowers(List<int> arrangementPattern)
     {
         if (flowers.Count == 0)
@@ -69,11 +80,12 @@ public class BouquetManager : MonoBehaviour
             return;
         }
 
-        // No pattern given -> walk through every palette slot in order.
         if (arrangementPattern == null || arrangementPattern.Count == 0)
         {
             arrangementPattern = new List<int>();
-            for (int i = 0; i < flowers.Count; i++) arrangementPattern.Add(i);
+
+            for (int i = 0; i < flowers.Count; i++)
+                arrangementPattern.Add(i);
         }
 
         ClearArrangement();
@@ -84,103 +96,112 @@ public class BouquetManager : MonoBehaviour
             int slot = arrangementPattern[i % arrangementPattern.Count];
             int flowerIndex = ((slot % flowers.Count) + flowers.Count) % flowers.Count;
             FlowerData data = flowers[flowerIndex];
+
             if (data != null)
-            {
                 flowerArrangement[i] = CreateFlower(data);
-            }
         }
 
         PositionFlowers();
     }
 
-    Flower CreateFlower(FlowerData data)
+    private Flower CreateFlower(FlowerData data)
     {
         GameObject prefab = data.flowerPrefab;
         if (prefab == null) return null;
 
         GameObject instance = Instantiate(prefab, transform);
-        instance.transform.localPosition = Vector3.zero; // every stem shares the binding point
+        instance.transform.localPosition = Vector3.zero;
         instance.transform.localScale = Vector3.one * data.arScale;
 
         Flower flower = instance.GetComponent<Flower>();
-        if (flower == null) flower = instance.AddComponent<Flower>();
+        if (flower == null)
+            flower = instance.AddComponent<Flower>();
+
         flower.Data = data;
         return flower;
     }
 
-    void ClearArrangement()
+    private void ClearArrangement()
     {
-        foreach (Flower f in flowerArrangement)
+        foreach (Flower flower in flowerArrangement)
         {
-            if (f != null) Destroy(f.gameObject);
+            if (flower != null)
+                Destroy(flower.gameObject);
         }
     }
 
-    // --- Positioning ----------------------------------------------------------
-
-    // Rotates every flower so the bouquet fans out from one origin. Ring sizes
-    // expands outward; outer rings tilt further, the last reaching maxBouquetSpread.
-    void PositionFlowers()
+    private void PositionFlowers()
     {
-        int baseCount = Mathf.Max(1, firstRingCount);
-        bool hasCenterFlower = flowerArrangement.Length % 2 == 1;
+        if (flowerArrangement == null || flowerArrangement.Length == 0)
+            return;
+
+        int count = flowerArrangement.Length;
         int index = 0;
 
-        // Odd count -> one flower stands straight up in the middle (angle 0).
-        if (hasCenterFlower)
+        Vector3 prefabStemDirection = Vector3.up;
+
+        if (count % 2 == 1)
         {
             if (flowerArrangement[0] != null)
-                flowerArrangement[0].transform.localRotation = Quaternion.identity;
+            {
+                flowerArrangement[0].transform.localPosition = Vector3.zero;
+                flowerArrangement[0].transform.localRotation =
+                    Quaternion.FromToRotation(prefabStemDirection, Vector3.up);
+            }
+
             index = 1;
         }
 
-        int flowersInRings = flowerArrangement.Length - index;
-        if (flowersInRings <= 0) return;
+        int ringCapacity = Mathf.Max(1, firstRingCount);
+        int safeGrowthRate = Mathf.Max(1, ringGrowthRate);
+        int estimatedRingCount = CountRings(count - index, ringCapacity, safeGrowthRate);
 
-        int ringCount = CountRings(flowersInRings, baseCount);
+        int currentRing = 0;
 
-        int ringSize = baseCount;
-        for (int ring = 0; ring < ringCount; ring++)
+        while (index < count)
         {
-            int countThisRing = Mathf.Min(ringSize, flowerArrangement.Length - index);
+            int flowersThisRing = Mathf.Min(ringCapacity, count - index);
+            float spread = maxBouquetSpread * (currentRing + 1) / (float)estimatedRingCount;
+            float ringOffset = currentRing % 2 == 0 ? 0f : 180f / flowersThisRing;
 
-            // Outer rings tilt further; the last ring reaches maxBouquetSpread.
-            float spread = maxBouquetSpread * (ring + 1) / (float)ringCount;
-
-            // Stagger alternate rings so blooms nest between the ring beneath them.
-            float ringOffset = (ring % 2 == 1) ? (180f / countThisRing) : 0f;
-
-            for (int j = 0; j < countThisRing; j++, index++)
+            for (int j = 0; j < flowersThisRing; j++, index++)
             {
-                if (flowerArrangement[index] == null) continue;
+                if (flowerArrangement[index] == null)
+                    continue;
 
-                float azimuth = 360f * j / countThisRing + ringOffset;
+                float azimuth = 360f * j / flowersThisRing + ringOffset;
+                Quaternion aroundCenter = Quaternion.AngleAxis(azimuth, Vector3.up);
 
-                // Tilt away from the up-axis (spread), THEN spin around it (azimuth).
-                // Before all: Random rotation around stem for ununiform look
-                Quaternion rotation =
-                    Quaternion.AngleAxis(azimuth, Vector3.up) *
+                Vector3 tiltedDirection =
+                    aroundCenter *
                     Quaternion.AngleAxis(spread, Vector3.forward) *
-                    Quaternion.AngleAxis(Random.Range(0f,360f),Vector3.up);
+                    Vector3.up;
 
-                Quaternion correction = Quaternion.Euler(-90f, 0f, 0f);
-                flowerArrangement[index].transform.localRotation = rotation * correction;
+                Quaternion rotation = Quaternion.FromToRotation(prefabStemDirection, tiltedDirection);
+
+                flowerArrangement[index].transform.localPosition = Vector3.zero;
+                flowerArrangement[index].transform.localRotation = rotation;
             }
 
-            ringSize *= 2; // each new ring holds double the previous one
+            ringCapacity *= safeGrowthRate;
+            currentRing++;
         }
     }
 
-    // How many rings are needed to seat 'flowers' (e.g. base, 2*base, 4*base...).
-    int CountRings(int flowers, int baseCount)
+    private int CountRings(int flowersToPlace, int firstCapacity, int growthRate)
     {
-        int rings = 0, ringSize = Mathf.Max(1, baseCount), placed = 0;
-        while (placed < flowers)
+        int rings = 0;
+        int placed = 0;
+        int capacity = Mathf.Max(1, firstCapacity);
+        int safeGrowthRate = Mathf.Max(1, growthRate);
+
+        while (placed < flowersToPlace)
         {
-            placed += ringSize;
-            ringSize *= ringGrowthRate;
+            placed += capacity;
+            capacity *= safeGrowthRate;
             rings++;
         }
-        return rings;
+
+        return Mathf.Max(1, rings);
     }
 }

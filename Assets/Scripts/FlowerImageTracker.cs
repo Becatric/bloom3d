@@ -118,12 +118,16 @@ public class FlowerImageTracker : MonoBehaviour
 
     private void ShowFlower(ARTrackedImage trackedImage)
     {
+        bool shouldRefreshFlowerUI =
+            !currentlyVisibleTrackableId.HasValue ||
+            currentlyVisibleTrackableId.Value != trackedImage.trackableId;
+
         HideOtherFlowers(trackedImage.trackableId);
 
         if (!spawnedFlowers.TryGetValue(
-            trackedImage.trackableId,
-            out GameObject flower
-        ))
+                trackedImage.trackableId,
+                out GameObject flower
+            ))
         {
             flower = SpawnFlower(trackedImage);
         }
@@ -140,7 +144,13 @@ public class FlowerImageTracker : MonoBehaviour
 
         if (flowerData != null)
         {
-            UpdateFlowerUI(flowerData);
+            // Do not reset the carousel while the same marker
+            // continues receiving tracking updates.
+            if (shouldRefreshFlowerUI)
+            {
+                UpdateFlowerUI(flowerData);
+            }
+
             UpdateDebugUI(flower, flowerData);
         }
     }
