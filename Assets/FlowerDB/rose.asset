@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 371fcced5420eda46b9cb39fda4431ce, type: 3}
-  m_Name: Rose
+  m_Name: rose
   m_EditorClassIdentifier: Assembly-CSharp::FlowerData
   id: rose
   displayName: Rose
